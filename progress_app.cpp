@@ -9,6 +9,8 @@
 #define REQUIRED_PAGES 30 
 #define DEADLINE 21
 
+#define PAUSE printf("Press Enter key to continue..."); fgetc(stdin);
+
 using namespace std;
 
 int getpages(){
@@ -97,7 +99,6 @@ void history(){
 
 	FILE *readpointer;
 	readpointer = fopen("progress.txt", "r");
-
 	if(readpointer == NULL){
 		printf("error file\n");
 		exit(-1);
@@ -105,19 +106,27 @@ void history(){
 
 	printf("\nHistory below: \n");
 
-	printf("!!!!!!!!!!!!!!!!\n\n");
-	while(fscanf(readpointer, "%d%d%d", &read1, &read2, &read3) != EOF){
-		printf("%d/%d Progress Today: %d\n", read1, read2, read3);
-	}
-	printf("\n!!!!!!!!!!!!!!!!\n\n\n");
-
+	fscanf(readpointer, "%d%d%d", &read1, &read2, &read3);
 	if(read3 == -1){
 		printf("!!!!!!!!!!!!!!!!\n\n");
 		printf("No History\n");
 		printf("Please Insert Your First Record\n");
 		printf("\n!!!!!!!!!!!!!!!!\n\n\n");
+		fclose(readpointer);
+		return;
 	}
-	
+
+	readpointer = fopen("progress.txt", "r");
+	if(readpointer == NULL){
+		printf("error file\n");
+		exit(-1);
+	}
+
+	printf("!!!!!!!!!!!!!!!!\n\n");
+	while(fscanf(readpointer, "%d%d%d", &read1, &read2, &read3) != EOF){
+		printf("%d/%d Progress Today: %d\n", read1, read2, read3);
+	}
+	printf("\n!!!!!!!!!!!!!!!!\n\n\n");	
 	
 	fclose(readpointer);
 }
@@ -130,6 +139,9 @@ void refresh(){
 		printf("error file\n");
 	}
 	fclose(filepointer);
+	printf("!!!!!!!!!!!!!!!!\n\n");
+	printf("Refresh Now\n");
+	printf("\n!!!!!!!!!!!!!!!!\n\n\n");
 }
 
 int main(){	
@@ -147,7 +159,8 @@ int main(){
 		printf("****************\n");
 		printf("Enter your choice: ");
 		
-		cin >> option;
+		//cin >> option;
+		scanf("%c", &option);
 		switch(option){
 			case '1': today_progress();
 				break;
@@ -159,6 +172,10 @@ int main(){
 				break;
 			case '5':
 				exit(-1);
+			default:
+				printf("error option\n");
+				printf("try it again\n");
+				break;
 		}
 		printf("*  * **** **** ****   **** **** * *   * ****\n");
 		printf("* *  *    *    *  *   *    *  * * **  * *\n");
@@ -167,7 +184,14 @@ int main(){
 		printf("*  * **** **** *      **** **** * *   * ****\n");
 		printf("\n");
 		printf("\n");
+
+		while(getchar() != '\n');
+		printf("Press Enter key to continue...");
+		while(getchar() != '\n');
+
+		//fgetc(stdin);
 		//system("pause");
 	}
 	return 0;
+
 }
