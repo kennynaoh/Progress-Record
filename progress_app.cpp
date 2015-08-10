@@ -21,7 +21,7 @@ int getpages(){
 	readpointer = fopen("progress.txt", "r");
 	if(readpointer == NULL){
 		printf("error file\n");
-		return 1;
+		exit(-1);
 	}
 	//fscanf(readpointer, "%d%d%d", &read1, &read2, &read3);
 	while(fscanf(readpointer, "%d%d%d", &read1, &read2, &read3) != EOF){
@@ -55,14 +55,10 @@ void today_progress(){
 	fprintf(filepointer, "%d %d %d\n", month, date, progress);
 	fclose(filepointer);
 
-	printf("!!!!!!!!!!!!!!!!\n");
-	printf("\n");
+	printf("!!!!!!!!!!!!!!!!\n\n");
 	printf("%d/%d \n", month, date);
 	printf("Today's Progress: %d\n", progress);
-	printf("\n");
-	printf("!!!!!!!!!!!!!!!!\n");
-	printf("\n");
-	printf("\n");
+	printf("\n!!!!!!!!!!!!!!!!\n\n\n");
 }
 
 void progress_calculate(){
@@ -78,30 +74,21 @@ void progress_calculate(){
 	int date_now = p->tm_mday;	
 
 	if(getpages() == 0){
-		printf("!!!!!!!!!!!!!!!!\n");
-		printf("\n");
+		printf("!!!!!!!!!!!!!!!!\n\n");
 		printf("No Record to Calculate\n");
 		printf("Please Insert Your First Record\n");
-		printf("\n");
-		printf("!!!!!!!!!!!!!!!!\n");
-		printf("\n");
-		printf("\n");
+		printf("\n!!!!!!!!!!!!!!!!\n\n\n");
 		return;
 	}
 	remaining_pages -= getpages();
 	remaining_days = DEADLINE - date_now;
 	avg = remaining_pages/remaining_days;
 
-	printf("!!!!!!!!!!!!!!!!\n");
-	printf("\n");
+	printf("!!!!!!!!!!!!!!!!\n\n");
 	printf("You still have %.0f pages to go within %.0f days. \n"
 		, remaining_pages, remaining_days);
 	printf("Write at least %.2f pages tomorrow!\n", avg);
-	printf("Keep Going\n");
-	printf("\n");
-	printf("!!!!!!!!!!!!!!!!\n");
-	printf("\n");
-	printf("\n");
+	printf("\n!!!!!!!!!!!!!!!!\n\n\n");
 }
 
 void history(){
@@ -116,21 +103,22 @@ void history(){
 		exit(-1);
 	}
 
-	printf("History below: \n");
+	printf("\nHistory below: \n");
 
+	printf("!!!!!!!!!!!!!!!!\n\n");
 	while(fscanf(readpointer, "%d%d%d", &read1, &read2, &read3) != EOF){
 		printf("%d/%d Progress Today: %d\n", read1, read2, read3);
 	}
+	printf("\n!!!!!!!!!!!!!!!!\n\n\n");
+
 	if(read3 == -1){
-		printf("!!!!!!!!!!!!!!!!\n");
-		printf("\n");
+		printf("!!!!!!!!!!!!!!!!\n\n");
 		printf("No History\n");
 		printf("Please Insert Your First Record\n");
-		printf("\n");
-		printf("!!!!!!!!!!!!!!!!\n");
-		printf("\n");
-		printf("\n");
+		printf("\n!!!!!!!!!!!!!!!!\n\n\n");
 	}
+	
+	
 	fclose(readpointer);
 }
 
@@ -151,10 +139,10 @@ int main(){
 
 		
 		printf("****************\n");
-		printf("1. Insert Your Today's Progress\n");
-		printf("2. Calculate Your Remaining Work\n");
-		printf("3. Check your History\n");
-		printf("4. Refresh the file information\n");
+		printf("1. Today's Progress\n");
+		printf("2. Remaining Work\n");
+		printf("3. History\n");
+		printf("4. Refresh\n");
 		printf("5. Quit\n");
 		printf("****************\n");
 		printf("Enter your choice: ");
