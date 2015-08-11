@@ -9,7 +9,7 @@
 #define REQUIRED_PAGES 30 
 #define DEADLINE 21
 
-#define PAUSE printf("Press Enter key to continue..."); fgetc(stdin);
+//#define PAUSE printf("Press Enter key to continue..."); fgetc(stdin);
 
 using namespace std;
 
@@ -94,8 +94,8 @@ void progress_calculate(){
 }
 
 void history(){
-	int read1, read2;
-	int read3 = -1;
+	int month, date;
+	int page = -1;
 
 	FILE *readpointer;
 	readpointer = fopen("progress.txt", "r");
@@ -106,29 +106,21 @@ void history(){
 
 	printf("\nHistory below: \n");
 
-	fscanf(readpointer, "%d%d%d", &read1, &read2, &read3);
-	if(read3 == -1){
+	fscanf(readpointer, "%d%d%d", &month, &date, &page);
+	if(page == -1){
 		printf("!!!!!!!!!!!!!!!!\n\n");
 		printf("No History\n");
 		printf("Please Insert Your First Record\n");
 		printf("\n!!!!!!!!!!!!!!!!\n\n\n");
 		fclose(readpointer);
-		return;
+	}else{
+		printf("!!!!!!!!!!!!!!!!\n\n");
+		do{
+			printf("%d/%d Progress Today: %d\n", month, date, page);
+		}while(fscanf(readpointer, "%d%d%d", &month, &date, &page) != EOF);
+		printf("\n!!!!!!!!!!!!!!!!\n\n\n");
+		fclose(readpointer);
 	}
-
-	readpointer = fopen("progress.txt", "r");
-	if(readpointer == NULL){
-		printf("error file\n");
-		exit(-1);
-	}
-
-	printf("!!!!!!!!!!!!!!!!\n\n");
-	while(fscanf(readpointer, "%d%d%d", &read1, &read2, &read3) != EOF){
-		printf("%d/%d Progress Today: %d\n", read1, read2, read3);
-	}
-	printf("\n!!!!!!!!!!!!!!!!\n\n\n");	
-	
-	fclose(readpointer);
 }
 
 void refresh(){
@@ -147,9 +139,7 @@ void refresh(){
 int main(){	
 	char option;
 
-	while(1){
-
-		
+	while(1){		
 		printf("****************\n");
 		printf("1. Today's Progress\n");
 		printf("2. Remaining Work\n");
