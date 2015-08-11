@@ -141,7 +141,7 @@ int main(){
 
 	while(1){		
 		printf("****************\n");
-		printf("1. Today's Progress\n");
+		printf("1. Progress\n");
 		printf("2. Remaining Work\n");
 		printf("3. History\n");
 		printf("4. Refresh\n");
@@ -150,7 +150,9 @@ int main(){
 		printf("Enter your choice: ");
 		
 		//cin >> option;
+
 		scanf("%c", &option);
+		getchar();
 		switch(option){
 			case '1': today_progress();
 				break;
@@ -175,7 +177,7 @@ int main(){
 		printf("\n");
 		printf("\n");
 
-		while(getchar() != '\n');
+
 		printf("Press Enter key to continue...");
 		while(getchar() != '\n');
 
