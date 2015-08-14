@@ -16,9 +16,10 @@ using namespace std;
 int getpages(){
 	FILE *readpointer;
 
-	int read1, read2;
-	int read3;
-	int finish_progress = 0;
+	int month;
+	float date;
+	float progress;
+	float finish_progress = 0;
 
 	readpointer = fopen("progress.txt", "r");
 	if(readpointer == NULL){
@@ -26,8 +27,8 @@ int getpages(){
 		exit(-1);
 	}
 	//fscanf(readpointer, "%d%d%d", &read1, &read2, &read3);
-	while(fscanf(readpointer, "%d%d%d", &read1, &read2, &read3) != EOF){
-		finish_progress += read3;
+	while(fscanf(readpointer, "%d%f%f", &month, &date, &progress) != EOF){
+		finish_progress += progress;
 	}
 	fclose(readpointer);
 	return finish_progress;
@@ -38,14 +39,14 @@ void today_progress(){
 
 	int month;
 	int date;
-	int progress;
+	float progress;
 
 	printf("Month: ");
 	scanf("%d", &month);
 	printf("Date: ");
 	scanf("%d,", &date);
 	printf("Progress Today: ");
-	scanf("%d,", &progress);
+	scanf("%f,", &progress);
 
 
 	filepointer = fopen("progress.txt", "a");
@@ -54,12 +55,12 @@ void today_progress(){
 		exit(-1);
 	}
 
-	fprintf(filepointer, "%d %d %d\n", month, date, progress);
+	fprintf(filepointer, "%d %d %.1f\n", month, date, progress);
 	fclose(filepointer);
 
 	printf("!!!!!!!!!!!!!!!!\n\n");
 	printf("%d/%d \n", month, date);
-	printf("Today's Progress: %d\n", progress);
+	printf("Today's Progress: %.1f\n", progress);
 	printf("\n!!!!!!!!!!!!!!!!\n\n\n");
 }
 
@@ -73,7 +74,10 @@ void progress_calculate(){
 	struct tm *p;
 	time (&timep);
 	p = gmtime(&timep);
-	int date_now = p->tm_mday;	
+	int date_now = p->tm_mday;
+	float hour_now = p->tm_hour;
+
+	float today = (24-hour_now)/24;
 
 	if(getpages() == 0){
 		printf("!!!!!!!!!!!!!!!!\n\n");
@@ -83,19 +87,20 @@ void progress_calculate(){
 		return;
 	}
 	remaining_pages -= getpages();
-	remaining_days = DEADLINE - date_now;
+	remaining_days = DEADLINE - date_now + today;
 	avg = remaining_pages/remaining_days;
 
 	printf("!!!!!!!!!!!!!!!!\n\n");
-	printf("You still have %.0f pages to go within %.0f days. \n"
+	printf("You still have %.1f pages to go within %.1f days. \n"
 		, remaining_pages, remaining_days);
 	printf("Write at least %.2f pages tomorrow!\n", avg);
 	printf("\n!!!!!!!!!!!!!!!!\n\n\n");
 }
 
 void history(){
-	int month, date;
-	int page = -1;
+	int month;
+	float date;
+	float page = -1;
 
 	FILE *readpointer;
 	readpointer = fopen("progress.txt", "r");
@@ -106,7 +111,7 @@ void history(){
 
 	printf("\nHistory below: \n");
 
-	fscanf(readpointer, "%d%d%d", &month, &date, &page);
+	fscanf(readpointer, "%d%f%f", &month, &date, &page);
 	if(page == -1){
 		printf("!!!!!!!!!!!!!!!!\n\n");
 		printf("No History\n");
@@ -116,8 +121,8 @@ void history(){
 	}else{
 		printf("!!!!!!!!!!!!!!!!\n\n");
 		do{
-			printf("%d/%d Progress Today: %d\n", month, date, page);
-		}while(fscanf(readpointer, "%d%d%d", &month, &date, &page) != EOF);
+			printf("%d/%.1f Progress Today: %.1f\n", month, date, page);
+		}while(fscanf(readpointer, "%d%f%f", &month, &date, &page) != EOF);
 		printf("\n!!!!!!!!!!!!!!!!\n\n\n");
 		fclose(readpointer);
 	}
