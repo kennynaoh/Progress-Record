@@ -180,7 +180,7 @@ int main(){
 		printf("* *  *    *    *      *  * *  * * *  ** *  *\n");
 		printf("*  * **** **** *      **** **** * *   * ****\n");
 		printf("\n");
-		printf("\n");
+//		printf("\n");
 
 
 		printf("Press Enter key to continue...");
