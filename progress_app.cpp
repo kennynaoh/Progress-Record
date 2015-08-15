@@ -70,13 +70,13 @@ void progress_calculate(){
 	float remaining_days;
 	float avg;
 
-	time_t timep;
-	struct tm *p;
-	time (&timep);
-	p = gmtime(&timep);
-	int date_now = p->tm_mday;
-	float hour_now = p->tm_hour;
-
+	time_t rawtime;
+	struct tm *timeinfo;
+	time (&rawtime);
+	timeinfo = localtime(&rawtime);
+	
+	int date_now = timeinfo->tm_mday;
+	float hour_now = timeinfo->tm_hour;
 	float today = (24-hour_now)/24;
 
 	if(getpages() == 0){
@@ -91,7 +91,7 @@ void progress_calculate(){
 	avg = remaining_pages/remaining_days;
 
 	printf("!!!!!!!!!!!!!!!!\n\n");
-	printf("You still have %.1f pages to go within %.1f days. \n"
+	printf("You still have %.1f pages to go within %.2f days. \n"
 		, remaining_pages, remaining_days);
 	printf("Write at least %.2f pages tomorrow!\n", avg);
 	printf("\n!!!!!!!!!!!!!!!!\n\n\n");
